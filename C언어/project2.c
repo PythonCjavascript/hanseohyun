@@ -2,22 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <io.h>  // _access ÇÔ¼ö »ç¿ë
+#include <io.h>  // _access í•¨ìˆ˜ ì‚¬ìš©
 #define rows 20
 #define cols 70
 
 char board[rows][cols];
 
-// È­¸é ÃÊ±âÈ­ ÇÔ¼ö
+// í™”ë©´ ì´ˆê¸°í™” í•¨ìˆ˜
 void resetboard() {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            board[i][j] = '_';  // ÃÊ±â È­¸é¿¡ '_' ¹®ÀÚ¸¦ »ç¿ëÇÏ¿© ºñ¿öµÎ±â
+            board[i][j] = '_';  // ì´ˆê¸° í™”ë©´ì— '_' ë¬¸ìžë¥¼ ì‚¬ìš©í•˜ì—¬ ë¹„ì›Œë‘ê¸°
         }
     }
 }
 
-// È­¸é Ãâ·Â ÇÔ¼ö
+// í™”ë©´ ì¶œë ¥ í•¨ìˆ˜
 void displayboard() {
     printf("**1234567890123456789012345678901234567890123456789012345678901234567890\n");
     printf("*************************************************************************************\n");
@@ -30,55 +30,55 @@ void displayboard() {
     }
 }
 
-// ÁÂÇ¥¿¡ ¹®ÀÚ ±×¸®±â ÇÔ¼ö
+// ì¢Œí‘œì— ë¬¸ìž ê·¸ë¦¬ê¸° í•¨ìˆ˜
 void drawcharacter(int row, int col, char ch) {
     if (row >= 1 && row <= rows && col >= 1 && col <= cols) {
         board[row - 1][col - 1] = ch;
     }
     else {
-        printf("Æ²¸° ÁÂÇ¥ÀÔ´Ï´Ù.\n");
+        printf("í‹€ë¦° ì¢Œí‘œìž…ë‹ˆë‹¤.\n");
     }
 }
 
-// ÁÂÇ¥ Áö¿ì±â ÇÔ¼ö
+// ì¢Œí‘œ ì§€ìš°ê¸° í•¨ìˆ˜
 void erasecharacter(int row, int col) {
     if (row >= 1 && row <= rows && col >= 1 && col <= cols) {
         board[row - 1][col - 1] = '_';
     }
     else {
-        printf("Æ²¸° ÁÂÇ¥ÀÔ´Ï´Ù.\n");
+        printf("í‹€ë¦° ì¢Œí‘œìž…ë‹ˆë‹¤.\n");
     }
 }
 
-// È­¸é ÃÊ±âÈ­
+// í™”ë©´ ì´ˆê¸°í™”
 void clearscreen() {
     resetboard();
     system("cls");
     displayboard();
 }
 
-// È­¸é ÀúÀå ÇÔ¼ö
+// í™”ë©´ ì €ìž¥ í•¨ìˆ˜
 void saveboard() {
     char filename[100];
-    printf("ÀúÀåÇÒ ÆÄÀÏ ÀÌ¸§ ÀÔ·Â: ");
+    printf("ì €ìž¥í•  íŒŒì¼ ì´ë¦„ ìž…ë ¥: ");
     scanf("%s", filename);
 
     if (_access(filename, 0) == 0) {
-        printf("ÆÄÀÏÀÌ ÀÌ¹Ì Á¸ÀçÇÕ´Ï´Ù. µ¤¾î¾µ±î¿ä? (y/n): ");
+        printf("íŒŒì¼ì´ ì´ë¯¸ ì¡´ìž¬í•©ë‹ˆë‹¤. ë®ì–´ì“¸ê¹Œìš”? (y/n): ");
         char overwrite;
         scanf(" %c", &overwrite);
         if (overwrite != 'y' && overwrite != 'Y') {
-            printf("ÀúÀå Ãë¼Ò\n");
+            printf("ì €ìž¥ ì·¨ì†Œ\n");
             return;
         }
         else {
-            printf("»õ ÆÄÀÏÀ» »ý¼ºÇÏ¿© ÀúÀåÇÕ´Ï´Ù.\n");
+            printf("ìƒˆ íŒŒì¼ì„ ìƒì„±í•˜ì—¬ ì €ìž¥í•©ë‹ˆë‹¤.\n");
         }
     }
 
     FILE* file = fopen(filename, "w");
     if (!file) {
-        printf("ÆÄÀÏ ÀúÀå ½ÇÆÐ\n");
+        printf("íŒŒì¼ ì €ìž¥ ì‹¤íŒ¨\n");
         return;
     }
 
@@ -87,81 +87,81 @@ void saveboard() {
         fputc('\n', file);
     }
     fclose(file);
-    printf("ÀúÀå ¿Ï·á\n");
+    printf("ì €ìž¥ ì™„ë£Œ\n");
 }
 
-// È­¸é ºÒ·¯¿À±â ÇÔ¼ö
+// í™”ë©´ ë¶ˆëŸ¬ì˜¤ê¸° í•¨ìˆ˜
 void loadboard() {
     char filename[100];
-    printf("ºÒ·¯¿Ã ÆÄÀÏ ÀÌ¸§ ÀÔ·Â: ");
+    printf("ë¶ˆëŸ¬ì˜¬ íŒŒì¼ ì´ë¦„ ìž…ë ¥: ");
     scanf("%s", filename);
 
     FILE* file = fopen(filename, "r");
     if (!file) {
-        printf("ÆÄÀÏ ºÒ·¯¿À±â ½ÇÆÐ\n");
+        printf("íŒŒì¼ ë¶ˆëŸ¬ì˜¤ê¸° ì‹¤íŒ¨\n");
         return;
     }
 
     for (int i = 0; i < rows; i++) {
         if (fread(board[i], sizeof(char), cols, file) < cols) {
-            printf("ÆÄÀÏ µ¥ÀÌÅÍ°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.\n");
+            printf("íŒŒì¼ ë°ì´í„°ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
             fclose(file);
             return;
         }
-        fgetc(file); // °³Çà ¹®ÀÚ ÀÐ±â
+        fgetc(file); // ê°œí–‰ ë¬¸ìž ì½ê¸°
     }
     fclose(file);
-    printf("ºÒ·¯¿À±â ¿Ï·á\n");
+    printf("ë¶ˆëŸ¬ì˜¤ê¸° ì™„ë£Œ\n");
 }
 
-// ¸Þ´º Ãâ·Â ¹× »ç¿ëÀÚ ¼±ÅÃ Ã³¸®
+// ë©”ë‰´ ì¶œë ¥ ë° ì‚¬ìš©ìž ì„ íƒ ì²˜ë¦¬
 void displaymenu() {
     int choice;
     while (1) {
-        printf("\n1. ±×¸®±â\n2. Áö¿ì±â\n3. ÀúÀåÇÏ±â\n4. ºÒ·¯¿À±â\n5. »õ È­¸é\n6. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n1. ê·¸ë¦¬ê¸°\n2. ì§€ìš°ê¸°\n3. ì €ìž¥í•˜ê¸°\n4. ë¶ˆëŸ¬ì˜¤ê¸°\n5. ìƒˆ í™”ë©´\n6. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
         if (scanf("%d", &choice) != 1) {
-            printf("Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ÇÁ·Î±×·¥ Á¾·á\n");
+            printf("ìž˜ëª»ëœ ìž…ë ¥ìž…ë‹ˆë‹¤. í”„ë¡œê·¸ëž¨ ì¢…ë£Œ\n");
             exit(1);
         }
 
-        if (choice == 1) {  // ±×¸®±â
+        if (choice == 1) {  // ê·¸ë¦¬ê¸°
             int row, col;
             char ch;
-            printf("Çà, ¿­ ¹øÈ£ ¹× ¹®ÀÚ¸¦ ÀÔ·Â (¿¹: 5 10 *): ");
+            printf("í–‰, ì—´ ë²ˆí˜¸ ë° ë¬¸ìžë¥¼ ìž…ë ¥ (ì˜ˆ: 5 10 *): ");
             if (scanf("%d %d %c", &row, &col, &ch) != 3) {
-                printf("Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ÇÁ·Î±×·¥ Á¾·á\n");
+                printf("ìž˜ëª»ëœ ìž…ë ¥ìž…ë‹ˆë‹¤. í”„ë¡œê·¸ëž¨ ì¢…ë£Œ\n");
                 exit(1);
             }
             drawcharacter(row, col, ch);
             displayboard();
         }
-        else if (choice == 2) {  // Áö¿ì±â
+        else if (choice == 2) {  // ì§€ìš°ê¸°
             int row, col;
-            printf("Áö¿ï Çà°ú ¿­ ¹øÈ£ ÀÔ·Â (¿¹: 5 10): ");
+            printf("ì§€ìš¸ í–‰ê³¼ ì—´ ë²ˆí˜¸ ìž…ë ¥ (ì˜ˆ: 5 10): ");
             if (scanf("%d %d", &row, &col) != 2) {
-                printf("Àß¸øµÈ ÀÔ·ÂÀÔ´Ï´Ù. ÇÁ·Î±×·¥ Á¾·á\n");
+                printf("ìž˜ëª»ëœ ìž…ë ¥ìž…ë‹ˆë‹¤. í”„ë¡œê·¸ëž¨ ì¢…ë£Œ\n");
                 exit(1);
             }
             erasecharacter(row, col);
             displayboard();
         }
-        else if (choice == 3) {  // ÀúÀåÇÏ±â
+        else if (choice == 3) {  // ì €ìž¥í•˜ê¸°
             saveboard();
         }
-        else if (choice == 4) {  // ºÒ·¯¿À±â
+        else if (choice == 4) {  // ë¶ˆëŸ¬ì˜¤ê¸°
             loadboard();
             displayboard();
         }
-        else if (choice == 5) {  // »õ È­¸é
+        else if (choice == 5) {  // ìƒˆ í™”ë©´
             clearscreen();
         }
-        else if (choice == 6) {  // Á¾·á
-            printf("ÇÁ·Î±×·¥ Á¾·á\n");
+        else if (choice == 6) {  // ì¢…ë£Œ
+            printf("í”„ë¡œê·¸ëž¨ ì¢…ë£Œ\n");
             break;
         }
         else {
-            printf("À¯È¿ÇÏÁö ¾ÊÀº ¼±ÅÃÀÔ´Ï´Ù.\n");
+            printf("ìœ íš¨í•˜ì§€ ì•Šì€ ì„ íƒìž…ë‹ˆë‹¤.\n");
         }
     }
 }
@@ -172,3 +172,4 @@ int main() {
     displaymenu();
     return 0;
 }
+
