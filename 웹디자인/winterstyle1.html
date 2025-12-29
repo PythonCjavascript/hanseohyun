@@ -1,0 +1,291 @@
+<html>
+<head>
+    <title>겨울철 따뜻하고 스타일리시한 코디 추천</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: black;
+            font-family: 맑은 고딕, sans-serif;
+        }
+        header {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h2 {
+            color: black;
+            border-bottom: 2px solid black;
+        }
+        .famous img, .image-container img {
+            width: 30%;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+        .control-panel {
+            margin: 20px auto;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 80%;
+        }
+        label {
+            margin-right: 10px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .memo-section {
+            margin: 20px auto;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 80%;
+            background-color: #f9f9f9;
+        }
+        textarea {
+            width: 100%;
+            height: 50px;
+        }
+        #memoDisplay {
+            margin-left: 10px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>겨울철 따뜻하고 스타일리시한 코디 추천</h1>
+    </header>
+
+    <!-- 제목 설정 -->
+    <div class="control-panel">
+        <h2>제목 설정</h2>
+        <div class="input-group">
+            <label for="titleColor">색상:</label>
+            <input type="color" onchange="changeTitleColor(this.value)">
+        </div>
+        <div class="input-group">
+            <label>스타일:</label>
+            <input type="checkbox" onchange="changeTitleStyle('italic')"> italic
+            <input type="checkbox" onchange="changeTitleStyle('bold')"> bold
+        </div>
+        <div class="input-group">
+            <label>정렬:</label>
+            <button onclick="changeTitleAlign('left')">왼쪽</button>
+            <button onclick="changeTitleAlign('center')">가운데</button>
+            <button onclick="changeTitleAlign('right')">오른쪽</button>
+        </div>
+        <div class="input-group">
+            <label for="titleFont">모양(글꼴):</label>
+            <select onchange="changeTitleFont(this.value)">
+                <option value="굴림">굴림</option>
+                <option value="맑은 고딕">맑은 고딕</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="titleFontSize">크기:</label>
+            <input type="number" min="10" max="100" value="30" onchange="changeTitleSize(this.value)"> px
+        </div>
+        <button onclick="resetTitle()">초기화</button>
+    </div>
+
+    <!-- 내용 설정 -->
+    <div class="control-panel">
+        <h2>내용 설정</h2>
+        <div class="input-group">
+            <label for="contentColor">색상:</label>
+            <input type="color" onchange="changeContentColor(this.value)">
+        </div>
+        <div class="input-group">
+            <label>스타일:</label>
+            <input type="checkbox" onchange="changeContentStyle('italic')"> italic
+            <input type="checkbox" onchange="changeContentStyle('bold')"> bold
+        </div>
+        <div class="input-group">
+            <label>정렬:</label>
+            <button onclick="changeContentAlign('left')">왼쪽</button>
+            <button onclick="changeContentAlign('center')">가운데</button>
+            <button onclick="changeContentAlign('right')">오른쪽</button>
+        </div>
+        <div class="input-group">
+            <label for="contentFont">모양(글꼴):</label>
+            <select onchange="changeContentFont(this.value)">
+                <option value="굴림">굴림</option>
+                <option value="맑은 고딕">맑은 고딕</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="contentFontSize">크기:</label>
+            <input type="number" min="10" max="100" value="16" onchange="changeContentSize(this.value)"> px
+        </div>
+        <button onclick="resetContent()">초기화</button>
+    </div>
+
+    <!-- 콘텐츠 -->
+    <div class="container">
+        <section class="recommendation">
+            <h2>1. 롱코트와 스웨터 조합</h2>
+            <img src="longcoatandsweater.jpg.png" alt="롱코트와 스웨터">
+            <p>롱코트는 전체적인 스타일과 우아함을 더해줍니다.</p>
+            <p>사진 및 내용 출처: <a href="https://c-writing.aztext.net/entry/%EA%B0%80%EC%9D%84-%ED%8C%A8%EC%85%98-%EC%BD%94%EB%94%94-%EB%B8%94%EB%9E%99-%ED%95%98%EC%9D%B4%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%AC%EC%B8%A0%EC%97%90-%ED%84%B0%ED%8B%80%EB%84%A5-%EC%8A%A4%EC%9B%A8%ED%84%B0%EC%99%80-%EB%A1%B1-%EC%BD%94%ED%8A%B8" target="_blank">
+                가을 패션 코디 블랙 하이웨이스트 팬츠에 터틀넥 스웨터와 롱코트 中 모던시크룩</a></p>
+        </section>
+        <section class="recommendation">
+            <h2>2. 무스탕과 기모 조거팬츠</h2>
+            <img src="mustangandjokerpants.jpg" alt="무스탕과 기모 조거팬츠">
+            <p>무스탕과 기모 조거팬츠를 조합하여 트렌디 하면서 따뜻하게 입을 수 있다. 또한 개인 취향에 따라 어그부츠를 추가할 수 있다.</p>
+            <p>사진 및 내용 출처: <a href="https://v.daum.net/v/GAkt48D7r4" target="_blank">겨울철 따뜻한 옷들로 해본 패셔너블한 코디3 中 크롭 무스탕 & 기모 조거팬츠</a></p>
+        </section>
+        <section class="recommendation">
+            <h2>3. 니트와 롱스커트</h2>
+            <img src="neatandlongskirt.jpg" alt="니트와 롱스커트">
+            <p>롱스커트와 니트를 함께 입으면 보온성과 함께 세련미를 동시에 추구할 수 있다.</p>
+            <p>사진 출처: <a href="https://v.daum.net/v/5bfe5188f3a1d400013884ec" target="_blank">겨울철 따뜻한 여자 롱스커트 코디 이렇게 입어봐★</a></p>
+        </section>
+        <section class="recommendation">
+            <h2>4. 겨울용 가디건</h2>
+            <img src="gardigeon.jpg" alt="겨울용 가디건">
+            <p>겨울용 가디건은 어느 옷에나 입어도 잘 어울리기 때문에 스타일에 따라 다양한 분위기들을 연출할 수 있다.</p>
+            <p>사진 출처: <a href="http://www.10x10.co.kr/shopping/category_prd.asp?itemid=3483884" target="_blank">여성 브이넥 꽈배기 니트 울소재 겨울 가디건</a></p>
+        </section>
+        <section class="recommendation">
+            <h2>5. 액세서리 활용</h2>
+            <div class="image-container">
+                <img src="bini.jpg" alt="겨울용 모자들">
+                <img src="muffler.jpg" alt="머플러">
+                <img src="gloves.jpg" alt="겨울용 장갑">
+            </div>
+            <p>모자, 머플러, 장갑 등의 액세서리는 보온성과 스타일을 동시에 제공한다.</p>
+            <p>사진 출처: <a href="https://post.naver.com/viewer/postView.naver?volumeNo=30531703&memberNo=4656129" target="_blank">
+                겨울 코디엔 포근함 한 스푼 추가요! 겨울 악세사리 모음.zip</a></p>
+        </section>
+    </div>
+
+    <div class="memo-section">
+        <h2>메모 추가</h2>
+        <textarea id="memoText" placeholder="메모를 추가하세요..."></textarea>
+        <button onclick="saveMemo()">메모 저장</button>
+        <span id="memoDisplay"></span> <!-- 저장된 메모가 표시될 부분 -->
+    </div>
+
+    <script>
+        let titleElement = document.querySelector('header h1');  
+        let titleElements = document.querySelectorAll('h2');  
+        let contentElements = document.querySelectorAll('.recommendation p'); 
+
+        // 제목 스타일링 함수
+        function changeTitleColor(color) {
+            titleElement.style.color = color;
+            titleElements.forEach(function(title) {
+                title.style.color = color;
+            });
+        }
+
+        function changeTitleStyle(style) {
+            if (style === 'italic') {
+                titleElement.style.fontStyle = titleElement.style.fontStyle === 'italic' ? 'normal' : 'italic';
+                titleElements.forEach(function(title) {
+                    title.style.fontStyle = title.style.fontStyle === 'italic' ? 'normal' : 'italic';
+                });
+            } else if (style === 'bold') {
+                titleElement.style.fontWeight = titleElement.style.fontWeight === 'bold' ? 'normal' : 'bold';
+                titleElements.forEach(function(title) {
+                    title.style.fontWeight = title.style.fontWeight === 'bold' ? 'normal' : 'bold';
+                });
+            }
+        }
+
+        function changeTitleAlign(align) {
+            titleElement.style.textAlign = align;
+            titleElements.forEach(function(title) {
+                title.style.textAlign = align;
+            });
+        }
+
+        function changeTitleFont(font) {
+            titleElement.style.fontFamily = font;
+            titleElements.forEach(function(title) {
+                title.style.fontFamily = font;
+            });
+        }
+
+        function changeTitleSize(size) {
+            titleElement.style.fontSize = size + 'px';
+            titleElements.forEach(function(title) {
+                title.style.fontSize = size + 'px';
+            });
+        }
+
+        function resetTitle() {
+            titleElement.style = '';
+            titleElements.forEach(function(title) {
+                title.style = '';
+            });
+        }
+
+        // 내용 스타일링 함수
+        function changeContentColor(color) {
+            contentElements.forEach(function(content) {
+                content.style.color = color;
+            });
+        }
+
+        function changeContentStyle(style) {
+            contentElements.forEach(function(content) {
+                if (style === 'italic') {
+                    content.style.fontStyle = content.style.fontStyle === 'italic' ? 'normal' : 'italic';
+                } else if (style === 'bold') {
+                    content.style.fontWeight = content.style.fontWeight === 'bold' ? 'normal' : 'bold';
+                }
+            });
+        }
+
+        function changeContentAlign(align) {
+            contentElements.forEach(function(content) {
+                content.style.textAlign = align;
+            });
+        }
+
+        function changeContentFont(font) {
+            contentElements.forEach(function(content) {
+                content.style.fontFamily = font;
+            });
+        }
+
+        function changeContentSize(size) {
+            contentElements.forEach(function(content) {
+                content.style.fontSize = size + 'px';
+            });
+        }
+
+        function resetContent() {
+            contentElements.forEach(function(content) {
+                content.style = '';
+            });
+        }
+
+        // 메모 저장 함수
+        function saveMemo() {
+            let memoText = document.getElementById('memoText').value;  
+            localStorage.setItem('memo', memoText);  
+            document.getElementById('memoDisplay').innerText = memoText;
+        }
+
+        window.onload = function() {
+            let savedMemo = localStorage.getItem('memo');  
+            if (savedMemo) {  
+                document.getElementById('memoText').value = savedMemo;
+                document.getElementById('memoDisplay').innerText = savedMemo;  
+            }
+        }
+    </script>
+</body>
+</html>
