@@ -32,4 +32,4 @@
 
 * **Logic Implementation:** 당시에는 JavaScript의 조건문(if-else)을 활용해 규칙 기반(Rule-based)으로 추천을 구현했으나, 현재는 통계학 전공 지식을 살려 **사용자 행동 로그 기반의 협업 필터링(Collaborative Filtering) 모델**로 발전시키는 방법에 대해 고민하고 있습니다.
 * **Data Handling:** `localStorage`를 직접 다뤄보며 데이터의 저장 구조(Key-Value)와 클라이언트 사이드 데이터 관리의 중요성을 경험했습니다.
-* **Documentation:** 코드의 재사용성과 유지보수를 위해 각 함수별 기능 명세서(Function Specification)를 상세히 작성하는 습관을 길렀습니다. (상세 내용은 `docs/WebDesign_report.pdf` 참조)
+* **Documentation:** 코드의 재사용성과 유지보수를 위해 각 함수별 기능 명세서(Function Specification)를 상세히 작성하는 습관을 길렀습니다. (상세 내용은 `WebDesign_report.pdf` 참조)
