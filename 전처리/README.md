@@ -1,75 +1,90 @@
+# KBO 월별 타격 데이터 신뢰도 보정 및 SQLite 분석 파이프라인
 
-# ⚾ KBO 타자 월별 성적 보정 및 시뮬레이션 (with SQL Pipeline)
+## 프로젝트 개요
 
-### (KBO Hitter Monthly Performance Analysis: From Preprocessing to DB Pipeline)
+구자욱 선수의 2015–2025년 월별 타격 기록 77건을 정제하고, 타수가 적은 달의 타율이 과도하게 흔들리는 문제를 베타-이항 축소 추정으로 보정한 프로젝트입니다. 분석 결과는 CSV와 SQLite로 저장하고 SQL로 재조회했습니다.
 
-## 📌 프로젝트 소개 (Overview)
+## 문제 정의
 
-이 프로젝트는 **'데이터 전처리(Data Preprocessing)'**의 중요성을 증명하고, **Python 분석 데이터를 DB로 연결하는 엔지니어링 역량**을 보여주기 위해 기획되었습니다.
+월별 타율은 표본 크기가 서로 다릅니다. 예를 들어 `4타수 2안타(0.500)`와 `100타수 30안타(0.300)`는 관측 타율만 보면 전자가 높지만, 두 값의 신뢰도를 같다고 보기 어렵습니다. 이 프로젝트에서는 타수가 적을수록 커리어 가중 평균 쪽으로 더 크게 조정하는 방식으로 월별 타율을 해석했습니다.
 
-삼성 라이온즈의 대표 타자 **구자욱 선수**의 기록을 분석 대상으로 삼았으며, 타수(AB)가 적은 달에 발생하는 **'평균의 함정(Small Sample Size Problem)'**을 통계적으로 보정하는 시뮬레이션을 수행했습니다. 또한, 전처리된 데이터를 **SQL Database에 적재하고 쿼리로 추출하는 파이프라인**을 직접 구축했습니다.
+## 수행 내용
 
-> *"전처리는 기계가 데이터를 빠르게 해석할 수 있도록 하는 첫 단계이며, 전체 분석 과정의 80%를 차지할 정도로 중요하다."*
+1. 연도 결측값 보완 및 연도·월 기준 정렬
+2. 자료형, 중복, 결측, `안타 ≤ 타수`, 타율 재계산 검증
+3. 커리어 가중 타율을 사전 평균으로 사용한 베타-이항 축소 추정
+4. 95% 신용구간과 표본 신뢰도 가중치 산출
+5. 사전 강도 25·50·100에 대한 민감도 점검
+6. 최종 데이터를 CSV와 SQLite로 적재
+7. SQL을 이용한 월별 가중 타율, 연도별 성적, 보정 폭 상위 기록 조회
 
-## 🎯 문제 의식 (Problem Statement)
+## 핵심 결과
 
-### "10타수 4안타(0.400)가 100타수 30안타(0.300)보다 정말 더 잘한 것일까?"
+- 77개 월별 기록의 합계는 1,656안타, 5,210타수이며 가중 커리어 타율은 약 `0.318`입니다.
+- 2017년 3월 `4타수 2안타(0.500)`는 표본이 매우 작아 조정 타율이 약 `0.331`로 이동했습니다.
+- 2025년 7월 `71타수 33안타(0.465)`는 더 많은 타수가 확보되어 조정 후에도 약 `0.404`를 유지했습니다.
+- SQL 월별 요약에서는 `AVG(월별 타율)` 대신 `SUM(안타) / SUM(타수)`를 사용해 표본 크기를 반영했습니다.
 
-야구 데이터, 특히 월별 성적을 볼 때 우리는 종종 **착시 현상**을 겪습니다.
+![Observed vs adjusted batting average](outputs/figures/observed_vs_adjusted.png)
 
-* **현상:** 특정 달에 타율이 4할이 넘는 맹타를 휘두르다가, 어떤 달은 1할대로 추락하는 등 기복이 심해 보임.
-* **원인:** 부상 복귀, 시즌 초반 등 **타석 수가 비정상적으로 적은 달**의 기록이 전체 평균을 왜곡함.
-* **해결책:** 표본(타수)이 부족한 달의 데이터를 단순히 제외하는 것이 아니라, **'만약 정상적으로 타석에 들어섰다면?'**이라는 통계적 가정하에 데이터를 보정하고 시뮬레이션합니다.
+![Adjustment magnitude by at-bats](outputs/figures/adjustment_by_at_bats.png)
 
-## 🛠 분석 방법론 (Methodology)
+## 데이터
 
-### 1. 데이터 수집 및 정제 (Data Cleaning)
+- 기간: 2015–2025년
+- 단위: 선수·연도·월
+- 원본 행 수: 77
+- 원본 열 수: 29
+- 원본 파일: `kjw.xlsx`
+- 수집 출처: STATIZ 구자욱 선수 상황별 기록
+- 제출 전 권장 사항: 실제 수집 페이지 주소와 수집일을 이 항목에 함께 기록
 
-* **Data Source:** KBO 공식 기록 (`구자욱 기록.xlsx`)
-* **Preprocessing:**
-* 누락된 연도(`Year`) 데이터를 `ffill()` (Forward Fill) 방식으로 채워 시계열 연속성 확보.
-* 분석에 불필요한 인덱스 컬럼 제거 및 재정렬.
+## 분석 방법
 
+관측 타율을 `H / AB`, 커리어 가중 타율을 `p0`, 사전 강도를 `k=50`으로 두었습니다.
 
+```text
+adjusted_avg = (H + k × p0) / (AB + k)
+```
 
-### 2. 타수 보정 알고리즘 (Adjustment Logic)
+타수가 많을수록 관측 타율의 비중이 커지고, 타수가 적을수록 커리어 평균의 비중이 커집니다. `k=50`은 결과를 설명하기 쉬운 기준값이며, 최적값이라고 주장하지 않습니다.
 
-통계적 왜곡을 줄이기 위해 다음과 같은 보정 로직을 설계했습니다.
+## 프로젝트 구조
 
-1. **월별 평균 타수 산출:** 커리어 동안 각 월마다 평균적으로 소화한 타수를 계산.
-2. **조건부 보정 (`modified_AB`):** 실제 타수가 평균보다 적을 경우, 평균 타수를 기준으로 데이터를 재조정.
+```text
+KBO_portfolio_revised/
+├── README.md
+├── KBO_Monthly_Analysis_clean.ipynb
+├── kjw.xlsx
+├── analysis_queries.sql
+├── requirements.txt
+├── .gitignore
+└── outputs/
+    ├── kbo_monthly_processed.csv
+    ├── kbo_monthly.db
+    └── figures/
+        ├── observed_vs_adjusted.png
+        └── adjustment_by_at_bats.png
+```
 
-### 3. 성적 시뮬레이션 (Simulation)
+## 실행 방법
 
-* 보정된 타수를 기반으로 **기대 타율(Simulated AVG)**과 **기대 안타 수**를 재산출.
-* 이를 통해 "운 좋게 타율이 높았던 달"의 거품을 걷어내고 객관적인 지표 생성.
+```bash
+pip install -r requirements.txt
+jupyter notebook KBO_Monthly_Analysis_clean.ipynb
+```
 
-### 4. Data Engineering Pipeline (SQL Integration) ✨ *Updated*
+노트북에서 `Restart Kernel and Run All`을 실행하면 CSV, SQLite DB, 그래프가 `outputs/`에 생성됩니다.
 
-* **DB 적재:** Python(Pandas)으로 전처리 완료된 데이터를 `sqlite3`를 활용해 **Database Table(`batter_stats`)로 적재**.
-* **SQL Analysis:** 실제 현업 환경을 고려하여, Python 코드가 아닌 **SQL 쿼리(SELECT, GROUP BY, AVG 등)**를 직접 작성해 월별 주요 지표(AVG, OPS)를 추출 및 검증.
+## 기술 스택
 
-## 📂 파일 구조 (File Structure)
+- Python
+- Pandas, NumPy, SciPy
+- Matplotlib
+- SQLite, SQL
 
-| 파일명 | 설명 |
-| --- | --- |
-| `KBO_Monthly_Analysis.ipynb` | **메인 분석 코드.** 전처리, 시뮬레이션 로직 및 **SQL 파이프라인(DB 적재/쿼리)** 구현 |
-| `Project_Report.pdf` | **프로젝트 보고서.** 분석 배경, 문제 정의(평균의 함정), 해결 방안 상세 기술 |
-| `Theory_Preprocessing.pdf` | **이론 배경.** 데이터 전처리의 중요성, 주요 데이터 문제 유형 정리 |
-| `구자욱 기록.xlsx` | 분석에 사용된 Raw Data 파일 |
+## 한계
 
-## 💻 사용 기술 (Tech Stack)
-
-* **Language:** Python 3.x, **SQL**
-* **Libraries:**
-* **Data Analysis:** `Pandas`, `NumPy`
-* **Database:** `sqlite3` (Embedded DB)
-* **Visualization:** `Seaborn`, `Matplotlib`
-
-
-
-## 📊 결과 요약 (Insights)
-
-1. **통계적 보정:** 타수가 극단적으로 적었던 달의 '뻥튀기된 타율'을 보정하여 선수의 실질적인 컨디션 사이클을 확인했습니다.
-2. **지속 가능성 예측:** 단순 기록 너머의 '지속 가능한 성적'을 예측하는 새로운 지표를 제시했습니다.
-3. **엔지니어링 역량 확보:** 단순 분석을 넘어, **[Raw Data → Python 전처리 → DB 적재 → SQL 추출]**로 이어지는 데이터 처리의 전체 흐름(End-to-End)을 구현했습니다.
+- 상대 투수, 구장, 부상, 타순 등 상황 변수를 반영하지 않았습니다.
+- 월별 기록은 시간적으로 연관될 수 있습니다.
+- 조정 타율은 표본 크기를 반영한 기술적 추정치이며, 미래 성적을 보장하는 예측값이 아닙니다.
