@@ -1,0 +1,2 @@
+﻿Observations,In_sample_R2,Adjusted_R2,Max_VIF,Standardized_condition_number,Breusch_Pagan_p_value,Jarque_Bera_p_value,Max_Cooks_D,Cooks_threshold_4_over_n,Observations_above_threshold,Coefficient_signs_stable_in_sensitivity_check
+50,0.957901811782967,0.9508854470801281,2.1088575286447973,2.662433933763494,0.354289721501581,0.5981499425180576,0.11964532846524813,0.08,4,True
