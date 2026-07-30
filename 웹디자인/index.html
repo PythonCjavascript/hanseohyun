@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="기온, 일정, 취향을 바탕으로 겨울 코디를 추천하고 즐겨찾기와 메모를 저장하는 반응형 웹 서비스입니다.">
+  <title>Winter Fit Finder | 겨울 코디 추천</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Winter Fit Finder 홈">
+      <span class="brand-mark" aria-hidden="true">W</span>
+      <span>
+        <strong>Winter Fit Finder</strong>
+        <small>Rule-based styling guide</small>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+      <a href="#recommend">코디 추천</a>
+      <a href="#collection">스타일 모음</a>
+      <a href="#memo">메모</a>
+    </nav>
+    <button class="icon-button" id="settingsButton" type="button" aria-controls="settingsPanel" aria-expanded="false">
+      <span aria-hidden="true">Aa</span>
+      <span class="sr-only">화면 설정 열기</span>
+    </button>
+  </header>
+
+  <aside class="settings-panel" id="settingsPanel" aria-label="화면 설정" hidden>
+    <div class="settings-panel__header">
+      <h2>화면 설정</h2>
+      <button class="icon-button" id="closeSettingsButton" type="button" aria-label="화면 설정 닫기">×</button>
+    </div>
+    <label class="field-label" for="fontSizeSelect">글자 크기</label>
+    <select id="fontSizeSelect">
+      <option value="small">작게</option>
+      <option value="normal" selected>보통</option>
+      <option value="large">크게</option>
+    </select>
+    <label class="toggle-row" for="contrastToggle">
+      <span>
+        <strong>고대비 모드</strong>
+        <small>텍스트와 배경의 대비를 높입니다.</small>
+      </span>
+      <input id="contrastToggle" type="checkbox" role="switch">
+    </label>
+  </aside>
+  <div class="panel-backdrop" id="panelBackdrop" hidden></div>
+
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="hero__content">
+        <p class="eyebrow">오늘의 조건에 맞춘 겨울 스타일</p>
+        <h1 id="heroTitle">춥다고 아무거나 입지 말고,<br><em>나에게 맞는 조합</em>을 골라보세요.</h1>
+        <p class="hero__description">
+          기온, 일정, 스타일 취향을 선택하면 다섯 가지 겨울 코디를 점수화해 추천합니다.
+          마음에 드는 코디와 메모는 브라우저에 저장됩니다.
+        </p>
+        <a class="primary-button" href="#recommend">추천 시작하기 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero-photo hero-photo--main">
+          <img src="assets/images/long-coat-sweater.png" alt="">
+        </div>
+        <div class="hero-stat">
+          <strong>5</strong>
+          <span>winter looks</span>
+        </div>
+        <div class="hero-tag">온도 · 일정 · 취향</div>
+      </div>
+    </section>
+
+    <section class="recommend-section section-shell" id="recommend" aria-labelledby="recommendTitle">
+      <div class="section-heading">
+        <p class="eyebrow">Personalized recommendation</p>
+        <h2 id="recommendTitle">조건을 선택해 코디를 추천받아 보세요.</h2>
+        <p>각 조건과 코디의 특성을 비교해 적합도 점수를 계산합니다.</p>
+      </div>
+
+      <div class="recommend-layout">
+        <form class="preference-form" id="preferenceForm">
+          <fieldset>
+            <legend><span>01</span> 오늘 기온</legend>
+            <div class="option-grid option-grid--temperature">
+              <label class="choice-card">
+                <input type="radio" name="temperature" value="freezing" checked>
+                <span class="choice-card__icon" aria-hidden="true">−5°</span>
+                <strong>영하권</strong>
+                <small>강한 보온이 필요해요</small>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="temperature" value="cold">
+                <span class="choice-card__icon" aria-hidden="true">3°</span>
+                <strong>0~7°C</strong>
+                <small>아우터가 꼭 필요해요</small>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="temperature" value="cool">
+                <span class="choice-card__icon" aria-hidden="true">10°</span>
+                <strong>8~12°C</strong>
+                <small>가벼운 레이어드가 좋아요</small>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend><span>02</span> 오늘 일정</legend>
+            <div class="segmented-control">
+              <label><input type="radio" name="occasion" value="daily" checked><span>일상</span></label>
+              <label><input type="radio" name="occasion" value="office"><span>출근·학교</span></label>
+              <label><input type="radio" name="occasion" value="date"><span>약속·데이트</span></label>
+              <label><input type="radio" name="occasion" value="outdoor"><span>야외 활동</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend><span>03</span> 선호 스타일</legend>
+            <div class="segmented-control">
+              <label><input type="radio" name="style" value="classic" checked><span>클래식</span></label>
+              <label><input type="radio" name="style" value="casual"><span>캐주얼</span></label>
+              <label><input type="radio" name="style" value="feminine"><span>페미닌</span></label>
+            </div>
+          </fieldset>
+
+          <label class="toggle-row toggle-row--form" for="warmthPriority">
+            <span>
+              <strong>보온성을 우선할게요</strong>
+              <small>보온 점수가 높은 코디에 가산점을 줍니다.</small>
+            </span>
+            <input id="warmthPriority" name="warmthPriority" type="checkbox" role="switch" checked>
+          </label>
+
+          <div class="form-actions">
+            <button class="primary-button" type="submit">내 코디 찾기 <span aria-hidden="true">→</span></button>
+            <button class="text-button" id="resetPreferencesButton" type="button">선택 초기화</button>
+          </div>
+        </form>
+
+        <div class="recommend-preview" aria-labelledby="previewTitle">
+          <div>
+            <p class="eyebrow">How it works</p>
+            <h3 id="previewTitle">세 가지 조건을 점수로 변환합니다.</h3>
+          </div>
+          <ol class="score-guide">
+            <li><strong>기온 적합도</strong><span>최대 4점</span></li>
+            <li><strong>일정 적합도</strong><span>최대 3점</span></li>
+            <li><strong>스타일 적합도</strong><span>최대 3점</span></li>
+            <li><strong>보온 우선 가산점</strong><span>최대 2점</span></li>
+          </ol>
+          <p class="preview-note">추천 결과는 패션 전문가의 판단이 아닌, 미리 정의한 규칙에 따른 안내입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section" aria-labelledby="resultsTitle">
+      <div class="section-shell">
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">Your picks</p>
+            <h2 id="resultsTitle">추천 결과</h2>
+            <p id="resultSummary" class="result-summary" aria-live="polite">기본 조건에 맞는 코디를 추천했어요.</p>
+          </div>
+          <div class="results-filter">
+            <label for="favoritesOnly">
+              <input id="favoritesOnly" type="checkbox">
+              <span>저장한 코디만 보기</span>
+            </label>
+          </div>
+        </div>
+        <div class="look-grid" id="recommendationGrid" aria-live="polite"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <strong>저장한 코디가 아직 없어요.</strong>
+          <p>마음에 드는 카드의 하트 버튼을 눌러보세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="collection-section section-shell" id="collection" aria-labelledby="collectionTitle">
+      <div class="section-heading section-heading--split">
+        <div>
+          <p class="eyebrow">Style collection</p>
+          <h2 id="collectionTitle">다섯 가지 코디의 특징을 비교해 보세요.</h2>
+        </div>
+        <p>보온도, 어울리는 일정, 스타일 키워드를 카드에 정리했습니다.</p>
+      </div>
+      <div class="collection-list" id="collectionList"></div>
+    </section>
+
+    <section class="memo-section" id="memo" aria-labelledby="memoTitle">
+      <div class="section-shell memo-layout">
+        <div>
+          <p class="eyebrow">Personal memo</p>
+          <h2 id="memoTitle">다음 외출을 위한 메모를 남겨보세요.</h2>
+          <p>작성한 내용은 서버로 전송되지 않고 현재 브라우저의 LocalStorage에 저장됩니다.</p>
+        </div>
+        <form class="memo-card" id="memoForm">
+          <label class="field-label" for="memoText">스타일 메모</label>
+          <textarea id="memoText" rows="5" maxlength="300" placeholder="예: 금요일 약속에는 롱코트와 검은 부츠 조합 시도하기"></textarea>
+          <div class="memo-meta">
+            <span id="memoCount">0 / 300</span>
+            <span id="memoStatus" role="status"></span>
+          </div>
+          <div class="form-actions">
+            <button class="secondary-button" type="submit">메모 저장</button>
+            <button class="text-button text-button--light" id="clearMemoButton" type="button">메모 삭제</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <strong>Winter Fit Finder</strong>
+      <p>HTML · CSS · Vanilla JavaScript로 제작한 개인 프로젝트</p>
+    </div>
+    <p>이미지 출처는 각 카드의 링크와 <a href="assets/IMAGE_SOURCES.md">IMAGE_SOURCES.md</a>에 정리했습니다.</p>
+  </footer>
+</body>
+</html>
