@@ -1,0 +1,8 @@
+﻿requirement,status,reason
+Contemporaneous untreated comparison group,Not met,All 2023 MLB pitchers were exposed to the new timer environment; no same-year unexposed MLB group is present.
+Covariates measured before treatment,Not met,"Tempo, pitch count, and velocity were measured in the same season as treatment assignment."
+Adequate positivity / overlap,Not met,The year-classification model had AUC 0.989; the original overlap rule removed 58.9% of rows.
+Outcome definition and source documented,Not met,"The supplied injury labels do not include the source list, timing rule, or injury inclusion criteria."
+Consistent player inclusion criteria across years,Not met,The export settings and minimum-pitch thresholds are undocumented; the raw tempo samples contain 391 players in 2022 and 250 unique players in 2023.
+Repeated pre- and post-policy periods,Not met,Only one pre-policy year and one post-policy year are available.
+Stable measurement of exposure mechanism,Partly met,Baseball Savant pitch tempo is release-to-release time and is not the same clock interval as the MLB pitch timer.

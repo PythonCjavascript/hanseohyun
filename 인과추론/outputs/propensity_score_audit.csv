@@ -1,0 +1,7 @@
+﻿metric,value,interpretation
+Rows in original complete-case setup,560,Matches the prior 560-row analysis
+Propensity model AUC,0.9887632834526132,Near-perfect year classification indicates very limited comparability
+Rows retained by min-max overlap rule,230,41.1% retained
+Rows removed by overlap rule,330,58.9% removed
+Treated rows retained,105,2023 observations
+Control rows retained,125,2022 observations

@@ -1,0 +1,13 @@
+﻿metric,value,note
+2022 raw tempo rows,391,No duplicate player names
+2022 unique players,391,Primary 2022 sample
+2022 raw velocity rows,352,Unique Statcast pitcher IDs
+2022 tempo-velocity merged players,348,89.0% retained
+2022 merged rows cross-checked to velocity export,348,Maximum primary-velocity difference 0.0 mph
+2023 raw tempo rows,251,Includes two Andrew Heaney rows
+2023 unique players,250,Duplicate aggregated by pitch-count weighting
+2023 raw velocity rows,361,Unique Statcast pitcher IDs
+2023 tempo-velocity merged players,211,84.4% retained
+2023 merged rows cross-checked to velocity export,212,Maximum primary-velocity difference 0.0 mph
+Matched players by normalized name,188,Used for paired primary sensitivity
+Matched players by Statcast ID,155,Complete-case paired sensitivity
